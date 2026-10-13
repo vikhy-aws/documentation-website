@@ -64,7 +64,7 @@ When adding the notification configuration resource type to an existing configur
 
 ## Notification access levels
 
-Notifications provides three predefined access levels for notification configuration documents. These access levels determine the specific permissions granted to users who have been granted access to a notification configuration resource.
+Notifications provides four predefined access levels for notification configuration documents. These access levels determine the specific permissions granted to users who have been granted access to a notification configuration resource.
 
 ### notifications_read_only
 
@@ -77,6 +77,21 @@ The `notifications_read_only` read-only access level grants users the ability to
 ```
 {% include copy.html %}
 
+### notifications_send_only
+
+The `notifications_send_only` send-only access level grants users the ability to view shared notification configurations and send messages through a shared channel but not modify them. This access level includes the following permissions:
+
+```yaml
+- 'cluster:admin/opensearch/notifications/configs/get'
+- 'cluster:admin/opensearch/notifications/channels/get'
+- 'cluster:admin/opensearch/notifications/features'
+- 'cluster:admin/opensearch/notifications/channel/send'
+```
+{% include copy.html %}
+
+To send through an email channel, a user also needs access to the channel's email account and recipient groups. Share each of them with the user at the `notifications_send_only` access level or higher. Recipient groups the user cannot access are skipped and reported as access denied in the response.
+{: .note}
+
 ### notifications_read_write
 
 The `notifications_read_write` read-write access level grants users full access to notification configuration operations except for sharing capabilities. This access level includes all read permissions plus write and send operations:
@@ -86,6 +101,7 @@ The `notifications_read_write` read-write access level grants users full access 
 - 'cluster:admin/opensearch/notifications/channels/get'
 - 'cluster:admin/opensearch/notifications/features'
 - 'cluster:admin/opensearch/notifications/feature/send'
+- 'cluster:admin/opensearch/notifications/channel/send'
 - 'cluster:admin/opensearch/notifications/test_notification'
 ```
 {% include copy.html %}
@@ -99,6 +115,7 @@ The `notifications_full_access` full access level grants users complete control 
 - 'cluster:admin/opensearch/notifications/channels/get'
 - 'cluster:admin/opensearch/notifications/features'
 - 'cluster:admin/opensearch/notifications/feature/send'
+- 'cluster:admin/opensearch/notifications/channel/send'
 - 'cluster:admin/opensearch/notifications/test_notification'
 - 'cluster:admin/security/resource/share'
 ```
@@ -132,7 +149,7 @@ POST _plugins/_security/api/resources/migrate
 ```
 {% include copy-curl.html %}
 
-Replace `<replace-with-existing-user>` with the username of an existing user who should own notification configurations. Because notification documents do not carry an owner name, every migrated configuration is attributed to this user. Replace `<select-appropriate-access-level>` with one of the available notification access levels: `notifications_read_only`, `notifications_read_write`, or `notifications_full_access`.
+Replace `<replace-with-existing-user>` with the username of an existing user who should own notification configurations. Because notification documents do not carry an owner name, every migrated configuration is attributed to this user. Replace `<select-appropriate-access-level>` with one of the available notification access levels: `notifications_read_only`, `notifications_send_only`, `notifications_read_write`, or `notifications_full_access`.
 
 ## Related documentation
 
