@@ -90,6 +90,12 @@ The Notifications plugin supports the following settings. All settings in this l
   - `exact` -- Users have access to notifications objects if they have exactly the same (with no additional) backend roles as the user who created the object.
   - `all` -- Users have access to notifications objects if their backend roles contain all of the backend roles of the user who created the object.
 
+- `opensearch.notifications.send_api.max_title_length` (Integer): The maximum length, in characters, of `event_source.title` in a request to the Send API (`POST _plugins/_notifications/feature/send/<config_id>`). Titles that contain line breaks or control characters are always rejected. Default is `99`, the longest subject Amazon SNS accepts.
+
+- `opensearch.notifications.send_api.max_text_length` (Integer): The maximum length, in characters, of `channel_message.text_description` in a request to the Send API. Default is `16384`.
+
+- `opensearch.notifications.send_api.allow_html_and_attachments` (Boolean): Whether the Send API accepts `channel_message.html_description` and attachments. Default is `false`.
+
 ## Query Insights plugin settings
 
 For information about Query Insights plugin settings, see [Query Insights features and settings]({{site.url}}{{site.baseurl}}/observing-your-data/query-insights/index#query-insights-features-and-settings).
